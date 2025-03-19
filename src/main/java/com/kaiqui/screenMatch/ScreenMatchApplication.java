@@ -40,7 +40,7 @@ public class ScreenMatchApplication implements CommandLineRunner {
 
 		List<DadosTemporada> temporadas = new ArrayList<>();
 
-		for(var i = 0; i < dados.totalTemporadas(); i++){
+		for(var i = 0; i <= dados.totalTemporadas(); i++){
 			json = api.obterDados("https://www.omdbapi.com/?t=The+Boys&season=" + i + "&apikey=76536016");
 			DadosTemporada temporada = conversor.obterDados(json, DadosTemporada.class);
 			temporadas.add(temporada);
