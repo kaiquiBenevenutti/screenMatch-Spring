@@ -2,11 +2,15 @@ package com.kaiqui.screenMatch;
 
 import models.DadosEpisodio;
 import models.DadosSerie;
+import models.DadosTemporada;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import services.ConsumoApi;
 import services.ConversorDados;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class ScreenMatchApplication implements CommandLineRunner {
@@ -33,5 +37,15 @@ public class ScreenMatchApplication implements CommandLineRunner {
 		DadosEpisodio ep = conversor.obterDados(json, DadosEpisodio.class);
 
 		System.out.println(ep);
+
+		List<DadosTemporada> temporadas = new ArrayList<>();
+
+		for(var i = 0; i < dados.totalTemporadas(); i++){
+			json = api.obterDados("https://www.omdbapi.com/?t=The+Boys&season=" + i + "&apikey=76536016");
+			DadosTemporada temporada = conversor.obterDados(json, DadosTemporada.class);
+			temporadas.add(temporada);
+		}
+
+		temporadas.forEach(System.out::println);
 	}
 }
