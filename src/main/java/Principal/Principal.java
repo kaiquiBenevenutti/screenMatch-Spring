@@ -1,5 +1,6 @@
 package Principal;
 
+import models.DadosEpisodio;
 import models.DadosSerie;
 import models.DadosTemporada;
 import services.ConsumoApi;
@@ -7,8 +8,10 @@ import services.ConversorDados;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal{
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
@@ -34,5 +37,17 @@ public class Principal{
 
         //temporadas.forEach(System.out::println);
         temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
+
+        List<DadosEpisodio> episodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream())
+                .collect(Collectors.toList());
+
+        System.out.println("\nTop 5 episodios:");
+
+        episodios.stream()
+                .filter(e -> !e.nota().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(DadosEpisodio::nota).reversed())
+                .limit(5)
+                .forEach(System.out::println);
     }
 }
