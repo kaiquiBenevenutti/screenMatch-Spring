@@ -3,6 +3,7 @@ package Principal;
 import models.DadosEpisodio;
 import models.DadosSerie;
 import models.DadosTemporada;
+import models.Episodio;
 import services.ConsumoApi;
 import services.ConversorDados;
 
@@ -49,5 +50,12 @@ public class Principal{
                 .sorted(Comparator.comparing(DadosEpisodio::nota).reversed())
                 .limit(5)
                 .forEach(System.out::println);
+
+        List<Episodio> eps = temporadas.stream()
+                .flatMap(t -> t.episodios().stream()
+                        .map(e -> new Episodio(t.temporada(), e)))
+                        .collect(Collectors.toList());
+
+        eps.forEach(System.out::println);
     }
 }
