@@ -11,10 +11,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Principal{
@@ -75,5 +72,10 @@ public class Principal{
                         "Temporada: " + e.getTemporada() +
                         " | Episodio: " + e.getTitulo() +
                         " | Data de Lançamento: " + e.getDataLancamento().format(df)));
+
+        Map<Integer, Double> avaliacaoPorTemp = eps.stream()
+                .filter(e -> e.getNota() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada, Collectors.averagingDouble(Episodio::getNota)));
+        System.out.println(avaliacaoPorTemp);
     }
 }
