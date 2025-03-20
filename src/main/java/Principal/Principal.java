@@ -8,6 +8,9 @@ import services.ConsumoApi;
 import services.ConversorDados;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -57,5 +60,20 @@ public class Principal{
                         .collect(Collectors.toList());
 
         eps.forEach(System.out::println);
+
+        System.out.println("Voce deseja ver a partir de qual ano: ");
+        var ano = scanner.nextInt();
+        scanner.nextLine();
+
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate dataBusca = LocalDate.of(ano, 1, 1);
+
+        eps.stream()
+                .filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataBusca))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getTemporada() +
+                        " | Episodio: " + e.getTitulo() +
+                        " | Data de Lançamento: " + e.getDataLancamento().format(df)));
     }
 }
